@@ -1,0 +1,61 @@
+body {
+    background-color: #fafafa;
+}
+.navbar {
+    background-color: white;
+    border-bottom: 1px solid #dbdbdb;
+}
+.stories-container {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    padding: 10px;
+}
+.story-item {
+    width: 60px;
+    text-align: center;
+    margin-right: 10px;
+}
+.story-item img {
+    width: 56px;
+    height: 56px;
+    border: 2px solid #e1306c;
+    padding: 2px;
+}
+.post-card {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+}
+.post-header {
+    padding: 10px;
+}
+.post-image {
+    width: 100%;
+    max-height: 600px;
+    object-fit: cover;
+}
+.post-actions button {
+    color: #262626;
+}
+.post-actions button:hover {
+    color: #1da1f2;
+}
+.suggestions-container {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    padding: 15px;
+}
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.suggestion-item img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+

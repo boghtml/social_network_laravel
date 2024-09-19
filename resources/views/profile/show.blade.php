@@ -3,59 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $user->username }}'s Profile</title>
+    <title>{{ $user->username }} | InstaClone</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('css/detailedView.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-        <!-- Включення лівої навігації -->
-        @include('partials.sidebar')
-        <!-- Центральна частина профілю -->
-            <main class="col-md-8 ms-sm-auto col-lg-9 px-md-4">
-                <div class="profile-header my-4">
-                    <div class="d-flex align-items-center">
-                        <img src="{{ $user->profile_picture }}" alt="{{ $user->username }}" class="rounded-circle me-3" width="100" height="100">
-                        <div>
-                            <h2 class="mb-0">{{ $user->username }}</h2>
-                            <p class="text-muted mb-0">{{ $user->bio }}</p>
+            <!-- Включення лівої навігації -->
+            @include('partials.sidebar')
+            
+            <!-- Центральна частина профілю -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="profile-header">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-center">
+                                <img src="{{ $user->profile_picture }}" alt="{{ $user->username }}" class="rounded-circle profile-picture">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center mb-3">
+                                    <h1 class="profile-username me-4">{{ $user->username }}</h1>
+                                    @if ($isOwner)
+                                        <a href="{{ route('profile.edit', ['username' => $user->username]) }}" class="btn btn-outline-secondary">Редагувати профіль</a>
+                                    @else
+                                        <form method="POST" action="{{ route('follow.toggle', ['username' => $user->username]) }}">
+                                            @csrf
+                                            <button type="submit" class="btn {{ $isFollowing ? 'btn-secondary' : 'btn-primary' }}">
+                                                {{ $isFollowing ? 'Відстежується' : 'Стежити' }}
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                                <div class="profile-stats d-flex mb-3">
+                                    <div class="me-4"><strong>{{ $user->posts->count() }}</strong> дописів</div>
+                                    <div class="me-4"><strong>{{ $followersCount }}</strong> читачів</div>
+                                    <div><strong>{{ $followingCount }}</strong> стежить</div>
+                                </div>
+                                <div class="profile-bio">
+                                    <p>{{ $user->bio }}</p>
+                                </div>
+                            </div>
                         </div>
-                        @if ($isOwner)
-                            <a href="{{ route('profile.edit', ['username' => $user->username]) }}" class="btn btn-outline-primary ms-auto">Редагувати профіль</a>
-                        @else
-                            <form method="POST" action="{{ route('follow.toggle', ['username' => $user->username]) }}">
-                                @csrf
-                                @if ($isFollowing)
-                                    <button type="submit" class="btn btn-secondary ms-auto">Відстежується</button>
-                                @else
-                                    <button type="submit" class="btn btn-primary ms-auto">Стежити</button>
-                                @endif
-                            </form>
-                        @endif
                     </div>
                 </div>
 
-                <div class="profile-info my-4">
-                    <div class="d-flex">
-                        <div class="me-4"><strong>{{ $user->posts->count() }}</strong> дописів</div>
-                        <div class="me-4"><strong>{{ $followersCount }}</strong> читачів</div>
-                        <div><strong>{{ $followingCount }}</strong> стежить</div>
-                    </div>
-                </div>
-
-                <!-- Навігаційні вкладки -->
-                <ul class="nav nav-tabs my-4" id="profileTabs" role="tablist">
+               <!-- Навігаційні вкладки -->
+               <ul class="nav nav-tabs justify-content-center my-4" id="profileTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab" aria-controls="posts" aria-selected="true">Допис</button>
+                        <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab" aria-controls="posts" aria-selected="true">
+                            <i class="fas fa-th-large"></i> Допис
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="saved-tab" data-bs-toggle="tab" data-bs-target="#saved" type="button" role="tab" aria-controls="saved" aria-selected="false">Збережено</button>
+                        <button class="nav-link" id="saved-tab" data-bs-toggle="tab" data-bs-target="#saved" type="button" role="tab" aria-controls="saved" aria-selected="false">
+                            <i class="fas fa-bookmark"></i> Збережено
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="liked-tab" data-bs-toggle="tab" data-bs-target="#liked" type="button" role="tab" aria-controls="liked" aria-selected="false">Вподобано</button>
+                        <button class="nav-link" id="liked-tab" data-bs-toggle="tab" data-bs-target="#liked" type="button" role="tab" aria-controls="liked" aria-selected="false">
+                            <i class="fas fa-heart"></i> Вподобано
+                        </button>
                     </li>
                 </ul>
 
@@ -102,5 +114,29 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Анімація при наведенні на кнопку "Стежити"
+            $('button.btn-primary').hover(
+                function() {
+                    $(this).removeClass('btn-primary').addClass('btn-danger').text('Відстежити');
+                },
+                function() {
+                    $(this).removeClass('btn-danger').addClass('btn-primary').text('Стежити');
+                }
+            );
+
+            // Анімація при наведенні на кнопку "Відстежується"
+            $('button.btn-secondary').hover(
+                function() {
+                    $(this).text('Відстежити');
+                },
+                function() {
+                    $(this).text('Відстежується');
+                }
+            );
+        });
+    </script>
 </body>
 </html>
