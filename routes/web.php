@@ -22,19 +22,22 @@ Route::get('/check-db', function () {
     }
 });
 
-// Перенаправлення на домашню сторінку, якщо користувач авторизований
+
+require __DIR__.'/auth.php';
+
+
+
 Route::middleware(['auth'])->group(function () {
-     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 });
-
-require __DIR__.'/auth.php';  // Це підключає маршрути для реєстрації, авторизації тощо.
-
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/{username}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/{username}', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/{username}', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/follow/{username}', [FollowerController::class, 'toggleFollow'])->name('follow.toggle');
+
 });
 
 Route::post('/like/toggle/{post}', [PostController::class, 'toggleLike'])->name('like.toggle');

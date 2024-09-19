@@ -9,20 +9,36 @@
             <i class="fas fa-ellipsis-h"></i>
         </button>
     </div>
+    
     @if($post->image_url)
         <img src="{{ $post->image_url }}" class="post-image" alt="Post Image">
     @endif
+    
     <div class="post-actions p-3">
-        <button class="btn btn-link p-0 me-3" id="likeBtn{{ $post->id }}">
-            <i class="{{ $post->likes->where('user_id', Auth::id())->count() ? 'fas' : 'far' }} fa-heart"></i>
-        </button>
-        <button class="btn btn-link p-0 me-3">
-            <i class="far fa-comment"></i>
-        </button>
-        <button class="btn btn-link p-0 float-end" id="saveBtn{{ $post->id }}">
-            <i class="{{ $post->savedPosts->where('user_id', Auth::id())->count() ? 'fas' : 'far' }} fa-bookmark"></i>
-        </button>
+        @if(Auth::check())
+            <form action="{{ route('like.toggle', $post->id) }}" method="POST">
+                @csrf
+                <button class="btn btn-link p-0 me-3" type="submit">
+                    <i class="{{ $post->likes->where('user_id', Auth::id())->count() ? 'fas' : 'far' }} fa-heart"></i>
+                </button>
+            </form>
+
+            <form action="{{ route('save.toggle', $post->id) }}" method="POST">
+                @csrf
+                <button class="btn btn-link p-0 float-end" type="submit">
+                    <i class="{{ $post->savedPosts->where('user_id', Auth::id())->count() ? 'fas' : 'far' }} fa-bookmark"></i>
+                </button>
+            </form>
+        @else
+            <a href="{{ route('login') }}" class="btn btn-link p-0 me-3 text-dark"> 
+                <i class="far fa-heart"></i> Увійдіть, щоб вподобати
+            </a>
+            <a href="{{ route('login') }}" class="btn btn-link p-0 float-end text-dark"> 
+                <i class="far fa-bookmark"></i> Увійдіть, щоб зберегти
+            </a>
+        @endif
     </div>
+    
     <div class="post-footer p-3">
         <p class="likes mb-2 fw-bold">
             <span id="likeCount{{ $post->id }}">{{ $post->likes->count() }}</span> вподобань
@@ -30,6 +46,7 @@
         <p class="caption"><strong>{{ $post->user->username }}</strong> {{ $post->caption }}</p>
         <p class="text-muted small">{{ $post->created_at->diffForHumans() }}</p>
     </div>
+    
     <div class="post-comments p-3 border-top">
         <input type="text" class="form-control" placeholder="Додати коментар...">
     </div>

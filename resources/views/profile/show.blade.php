@@ -12,11 +12,12 @@
 </head>
 
 <body>
+    
     <div class="container-fluid">
         <div class="row">
             <!-- Включення лівої навігації -->
             @include('partials.sidebar')
-            
+
             <!-- Центральна частина профілю -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="profile-header">
@@ -25,19 +26,24 @@
                             <div class="col-md-4 text-center">
                                 <img src="{{ $user->profile_picture }}" alt="{{ $user->username }}" class="rounded-circle profile-picture">
                             </div>
+                            
                             <div class="col-md-8">
                                 <div class="d-flex align-items-center mb-3">
                                     <h1 class="profile-username me-4">{{ $user->username }}</h1>
-                                    @if ($isOwner)
-                                        <a href="{{ route('profile.edit', ['username' => $user->username]) }}" class="btn btn-outline-secondary">Редагувати профіль</a>
-                                    @else
-                                        <form method="POST" action="{{ route('follow.toggle', ['username' => $user->username]) }}">
-                                            @csrf
-                                            <button type="submit" class="btn {{ $isFollowing ? 'btn-secondary' : 'btn-primary' }}">
-                                                {{ $isFollowing ? 'Відстежується' : 'Стежити' }}
-                                            </button>
-                                        </form>
+                                    @if (Auth::check())
+                                        <!-- Кнопка для редагування профілю -->
+                                        @if ($isOwner)
+                                            <a href="{{ route('profile.edit', ['username' => $user->username]) }}" class="btn btn-outline-primary">Редагувати профіль</a>
+                                        @else
+                                            <form method="POST" action="{{ route('follow.toggle', ['username' => $user->username]) }}">
+                                                @csrf
+                                                <button type="submit" class="btn {{ $isFollowing ? 'btn-secondary' : 'btn-primary' }}">
+                                                    {{ $isFollowing ? 'Відстежується' : 'Стежити' }}
+                                                </button>
+                                            </form>
+                                        @endif
                                     @endif
+
                                 </div>
                                 <div class="profile-stats d-flex mb-3">
                                     <div class="me-4"><strong>{{ $user->posts->count() }}</strong> дописів</div>

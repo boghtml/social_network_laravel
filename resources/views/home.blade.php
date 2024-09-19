@@ -17,7 +17,7 @@
 
     <div class="posts-container">
         @foreach($posts as $post)
-            @include('partials.post', ['post' => $post]) >
+            @include('partials.post', ['post' => $post])
         @endforeach
     </div>
 @endsection
