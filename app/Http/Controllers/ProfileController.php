@@ -33,7 +33,6 @@ class ProfileController extends Controller
         $authUser = Auth::check() ? Auth::user() : null;
         $isOwner = $authUser && $authUser->id === $user->id;
 
-        // Перевірка, чи підписаний поточний користувач на цього користувача
         $isFollowing = $authUser ? Follower::where('user_id', $authUser->id)
                                             ->where('following_user_id', $user->id)
                                             ->exists() : false;

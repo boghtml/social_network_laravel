@@ -16,7 +16,7 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
-        // Зв'язок з моделлю Post
+    
     public function post()
     {
         return $this->belongsTo(Post::class, 'post_id');

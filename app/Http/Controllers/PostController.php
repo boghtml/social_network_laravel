@@ -17,10 +17,8 @@ class PostController extends Controller
         $like = Like::where('user_id', $user->id)->where('post_id', $post->id)->first();
 
         if ($like) {
-            // Видалити лайк
             $like->delete();
         } else {
-            // Додати лайк
             Like::create([
                 'user_id' => $user->id,
                 'post_id' => $post->id,
@@ -38,10 +36,8 @@ class PostController extends Controller
         $savedPost = SavedPost::where('user_id', $user->id)->where('post_id', $post->id)->first();
 
         if ($savedPost) {
-            // Видалити збережений пост
             $savedPost->delete();
         } else {
-            // Додати збережений пост
             SavedPost::create([
                 'user_id' => $user->id,
                 'post_id' => $post->id,

@@ -25,13 +25,14 @@ class User extends Authenticatable
 
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class); // Один до багатьох
     }
     
     public function likedPosts()
     {
-        return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id');
+        return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id'); // Багато до багатьох
     }
+
     public function savedPosts()
     {
         return $this->hasMany(SavedPost::class);

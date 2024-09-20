@@ -11,15 +11,12 @@ class SavedPost extends Model
 
     protected $fillable = ['user_id', 'post_id'];
 
-    public $timestamps = false; // Вимкнення автоматичних міток часу
+    public $timestamps = false;
 
-    // Вказання поля primary key
     protected $primaryKey = 'savedpost_id';
 
-    // Вимкнення автоінкремента для primary key
     public $incrementing = false;
 
-    // Вказання типу primary key як int
     protected $keyType = 'int';
 
      // Додаємо зв'язок з моделлю Post
