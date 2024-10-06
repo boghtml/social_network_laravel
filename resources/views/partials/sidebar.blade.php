@@ -8,6 +8,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('products.index') }}">
+                    <i class="fas fa-store"></i> Магазин
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="fas fa-search"></i> Пошук
                 </a>

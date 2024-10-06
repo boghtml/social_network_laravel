@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -44,3 +46,12 @@ Route::post('/like/toggle/{post}', [PostController::class, 'toggleLike'])->name(
 Route::post('/save/toggle/{post}', [PostController::class, 'toggleSave'])->name('save.toggle');
 
 Route::post('/follow/{username}', [FollowerController::class, 'toggleFollow'])->name('follow.toggle');
+
+
+// Маршрут для відображення каталогу товарів
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+// Маршрут для відображення детальної інформації про товар
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
