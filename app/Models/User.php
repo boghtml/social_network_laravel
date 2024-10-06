@@ -11,13 +11,11 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // хто стежить за користувачем
     public function followers()
     {
         return $this->hasMany(Follower::class, 'following_user_id');
     }
 
-    // за ким стежить користувач
     public function following()
     {
         return $this->hasMany(Follower::class, 'user_id');
@@ -46,6 +44,12 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'first_name',
+        'last_name',
+        'address',
+        'role',
+        'bio',
+        'profile_picture',
     ];
 
     /**
