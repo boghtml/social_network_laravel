@@ -1,10 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.store')
+
+@section('title', 'Каталог товарів')
 
 @section('content')
 <div class="container-fluid mt-4">
     <div class="row">
-        <!-- Sidebar for filters -->
         <div class="col-md-3">
+            <!-- Sidebar for filters -->
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0">Фільтри</h5>
@@ -17,7 +19,7 @@
                             <select name="category" id="category" class="form-select">
                                 <option value="">Всі категорії</option>
                                 @foreach ($categories as $cat)
-                                    <option value="{{ $cat->name }}" {{ request('category') == $cat->name ? 'selected' : '' }}>
+                                    <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
                                         {{ $cat->name }}
                                     </option>
                                 @endforeach
@@ -65,22 +67,24 @@
                         <div class="col">
                             <div class="card h-100 shadow-sm product-card">
                                 <div class="position-relative">
-                                    @if ($product->images->count())
-                                        @php
-                                            $primaryImage = $product->images->firstWhere('is_primary', true) ?? $product->images->first();
-                                        @endphp
-                                        <a href="{{ route('products.show', $product) }}">
-                                            <img src="{{ asset($primaryImage->image_url) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
-                                        </a>
-                                    @else
-                                        <img src="{{ asset('images/no-image.png') }}" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
-                                    @endif
-                                    @if ($product->stock_quantity <= 5 && $product->stock_quantity > 0)
-                                        <span class="badge bg-warning position-absolute top-0 end-0 m-2">Обмежений запас</span>
-                                    @elseif ($product->stock_quantity == 0)
-                                        <span class="badge bg-danger position-absolute top-0 end-0 m-2">Продано</span>
-                                    @endif
-                                </div>
+                                @if ($product->images->count())
+                                    @php
+                                        $primaryImage = $product->images->firstWhere('is_primary', true) ?? $product->images->first();
+                                        $imageUrl = $primaryImage->image_url;
+                                    @endphp
+                                    <a href="{{ route('products.show', $product) }}">
+                                        <img src="{{ $imageUrl }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                                    </a>
+                                @else
+                                    <img src="{{ asset('images/no-image.png') }}" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                                @endif
+
+                                @if ($product->stock_quantity <= 5 && $product->stock_quantity > 0)
+                                    <span class="badge bg-warning position-absolute top-0 end-0 m-2">Обмежений запас</span>
+                                @elseif ($product->stock_quantity == 0)
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">Продано</span>
+                                @endif
+                            </div>
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title">{{ $product->name }}</h5>
                                     <p class="card-text flex-grow-1">
@@ -116,13 +120,21 @@
                     <p>Спробуйте змінити параметри фільтрації або зайдіть пізніше.</p>
                 </div>
             @endif
+        
         </div>
     </div>
 </div>
 @endsection
 
 @section('scripts')
+<!-- Додаткові скрипти, якщо потрібно -->
 <script>
-    // Додайте ваш JavaScript код, якщо потрібно
+    
+    $(document).ready(function() {
+        $('.img-thumbnail').on('click', function() {
+            var index = $(this).data('slide-to');
+            $('#productCarousel').carousel(index);
+        });
+    });
 </script>
 @endsection

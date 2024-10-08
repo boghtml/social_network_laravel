@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.store')
 
 @section('content')
 <div class="container mt-5">
@@ -12,38 +12,44 @@
 
     <div class="row">
         <div class="col-md-6">
-            @if ($product->images->count())
-                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @foreach ($product->images as $key => $image)
-                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                <img src="{{ asset($image->image_url) }}" class="d-block w-100" alt="{{ $product->name }}" style="object-fit: contain; height: 500px;">
-                            </div>
-                        @endforeach
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
-                </div>
-                <div class="row mt-2">
-                    @foreach ($product->images->take(4) as $image)
-                        <div class="col-3">
-                        <img src="{{ asset($image->image_url) }}"
-     class="img-thumbnail"
-     alt="{{ $product->name }}"
-     style="object-fit: cover; height: 80px; width: 100%; cursor: pointer;"
-     data-slide-to="{{ $loop->index }}">
-
-
+        @if ($product->images && $product->images->count() > 0)
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach ($product->images as $key => $image)
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            <img src="{{ $image->image_url }}" class="d-block w-100" alt="{{ $product->name }}" style="object-fit: contain; height: 500px;">
                         </div>
                     @endforeach
                 </div>
-            @else
-                <img src="{{ asset('images/no-image.png') }}" class="img-fluid" alt="No Image" style="object-fit: contain; height: 500px; width: 100%;">
+                @if ($product->images->count() > 1)
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                @endif
+            </div>
+            @if ($product->images->count() > 1)
+                <div class="row mt-2">
+                    @foreach ($product->images->take(4) as $key => $image)
+                        <div class="col-3">
+                            <img src="{{ $image->image_url }}"
+                                class="img-thumbnail"
+                                alt="{{ $product->name }}"
+                                style="object-fit: cover; height: 80px; width: 100%; cursor: pointer;"
+                                data-bs-target="#productCarousel"
+                                data-bs-slide-to="{{ $key }}">
+                        </div>
+                    @endforeach
+                </div>
             @endif
+        @else
+            <img src="{{ asset('images/no-image.png') }}" class="img-fluid" alt="No Image" style="object-fit: contain; height: 500px; width: 100%;">
+        @endif
+
         </div>
         <div class="col-md-6">
             <h1 class="mb-3">{{ $product->name }}</h1>
@@ -91,20 +97,21 @@
 
 @section('scripts')
 <script>
-    $(document).ready(function () {
-        var carousel = new bootstrap.Carousel(document.getElementById('productCarousel'), {
-            interval: false
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        var productCarousel = document.getElementById('productCarousel');
+        if (productCarousel) {
+            var carousel = new bootstrap.Carousel(productCarousel, {
+                interval: false
+            });
 
-        // Додаткові скрипти, якщо потрібно
-    });
-
-    $(document).ready(function() {
-        $('.img-thumbnail').on('click', function() {
-            var index = $(this).data('slide-to');
-            $('#productCarousel').carousel(index);
-        });
+            var thumbnails = document.querySelectorAll('.img-thumbnail');
+            thumbnails.forEach(function (thumbnail) {
+                thumbnail.addEventListener('click', function () {
+                    var index = this.getAttribute('data-bs-slide-to');
+                    carousel.to(parseInt(index));
+                });
+            });
+        }
     });
 </script>
-
 @endsection

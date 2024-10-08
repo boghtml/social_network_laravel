@@ -113,3 +113,26 @@ body {
         display: none;
     }
 }
+
+
+.product-card {
+    transition: transform 0.3s ease-in-out;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+}
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+.btn-outline-primary:hover {
+    color: #fff;
+}
+.pagination {
+    justify-content: center;
+}
+
+
+.custom-list{
+    color: #fff;
+}

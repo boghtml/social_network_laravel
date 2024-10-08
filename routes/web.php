@@ -8,6 +8,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -55,3 +57,15 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+
+
+Route::get('/store', [StoreController::class, 'home'])->name('store.home');
+Route::get('/store/about', [StoreController::class, 'about'])->name('store.about');
+Route::get('/store/contact', [StoreController::class, 'contact'])->name('store.contact');
+Route::get('/store/privacy', [StoreController::class, 'privacy'])->name('store.privacy');
+
+
+
+Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
+
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index')->middleware('auth');
