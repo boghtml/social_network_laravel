@@ -95,15 +95,16 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var productCarousel = document.getElementById('productCarousel');
         if (productCarousel) {
             var carousel = new bootstrap.Carousel(productCarousel, {
-                interval: false
+                interval: false // Вимкнення автоматичного прокручування
             });
 
+            // Обробка кліків на мініатюрах
             var thumbnails = document.querySelectorAll('.img-thumbnail');
             thumbnails.forEach(function (thumbnail) {
                 thumbnail.addEventListener('click', function () {
@@ -111,7 +112,31 @@
                     carousel.to(parseInt(index));
                 });
             });
+
+            // Навігація за допомогою клавіатури
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowLeft') {
+                    carousel.prev();
+                } else if (e.key === 'ArrowRight') {
+                    carousel.next();
+                }
+            });
+
+            // Фокус на каруселі для роботи з клавіатурою
+            productCarousel.focus();
+
+            // Валідація вводу кількості
+            var quantityInput = document.getElementById('quantityInput');
+            if (quantityInput) {
+                quantityInput.addEventListener('input', function () {
+                    var max = parseInt(this.getAttribute('max'));
+                    var value = parseInt(this.value);
+                    if (value > max) {
+                        this.value = max;
+                    }
+                });
+            }
         }
     });
 </script>
-@endsection
+@endpush
