@@ -50,10 +50,8 @@ Route::post('/save/toggle/{post}', [PostController::class, 'toggleSave'])->name(
 Route::post('/follow/{username}', [FollowerController::class, 'toggleFollow'])->name('follow.toggle');
 
 
-// Маршрут для відображення каталогу товарів
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
-// Маршрут для відображення детальної інформації про товар
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
@@ -69,3 +67,23 @@ Route::get('/store/privacy', [StoreController::class, 'privacy'])->name('store.p
 Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index')->middleware('auth');
+
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart/remove', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+});
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/create', [App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders', [App\Http\Controllers\OrderController::class, 'store'])->name('orders.store');
+   
+    Route::get('/orders/confirmation', [OrderController::class, 'confirmation'])->name('orders.confirmation');
+
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show')->where('order', '[0-9]+');
+
+
+});

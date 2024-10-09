@@ -68,9 +68,13 @@
                     <input type="hidden" name="product_id" value="{{ $product->id }}" />
                     <div class="input-group mb-3" style="max-width: 200px;">
                         <input type="number" name="quantity" class="form-control" value="1" min="1" max="{{ $product->stock_quantity }}" id="quantityInput" />
-                        <button class="btn btn-primary" type="submit" id="addToCartBtn">
+                        <button class="btn btn-primary" type="button" id="addToCartBtn"
+                            data-product-id="{{ $product->id }}"
+                            data-add-cart-url="{{ route('cart.add') }}"
+                            data-csrf-token="{{ csrf_token() }}">
                             <i class="fas fa-cart-plus"></i> В корзину
                         </button>
+
                     </div>
                 </form>
             @else
@@ -91,20 +95,20 @@
         </div>
     </div>
 
-    <!-- Додатковий контент, якщо потрібно -->
 </div>
+
 @endsection
 
-@push('scripts')
+@section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var productCarousel = document.getElementById('productCarousel');
         if (productCarousel) {
             var carousel = new bootstrap.Carousel(productCarousel, {
-                interval: false // Вимкнення автоматичного прокручування
+                interval: false 
             });
 
-            // Обробка кліків на мініатюрах
+            
             var thumbnails = document.querySelectorAll('.img-thumbnail');
             thumbnails.forEach(function (thumbnail) {
                 thumbnail.addEventListener('click', function () {
@@ -113,7 +117,6 @@
                 });
             });
 
-            // Навігація за допомогою клавіатури
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'ArrowLeft') {
                     carousel.prev();
@@ -122,10 +125,8 @@
                 }
             });
 
-            // Фокус на каруселі для роботи з клавіатурою
             productCarousel.focus();
 
-            // Валідація вводу кількості
             var quantityInput = document.getElementById('quantityInput');
             if (quantityInput) {
                 quantityInput.addEventListener('input', function () {
@@ -137,6 +138,51 @@
                 });
             }
         }
+
+        var addToCartBtn = document.getElementById('addToCartBtn');
+        if (addToCartBtn) {
+            var productId = addToCartBtn.getAttribute('data-product-id');
+            var addCartUrl = addToCartBtn.getAttribute('data-add-cart-url');
+            var csrfToken = addToCartBtn.getAttribute('data-csrf-token');
+
+            addToCartBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                var quantity = document.getElementById('quantityInput').value;
+
+                fetch(addCartUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: quantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    var cartItemCount = data.cartItemCount;
+                    var cartIcon = document.querySelector('.fa-shopping-cart');
+                    var badge = cartIcon.nextElementSibling;
+                    if (!badge) {
+                        badge = document.createElement('span');
+                        badge.classList.add('position-absolute', 'top-0', 'start-100', 'translate-middle', 'badge', 'rounded-pill', 'bg-danger');
+                        cartIcon.parentNode.appendChild(badge);
+                    }
+                    badge.textContent = cartItemCount;
+
+                    addToCartBtn.classList.add('btn-success');
+                    addToCartBtn.classList.remove('btn-primary');
+                    addToCartBtn.innerHTML = '<i class="fas fa-check"></i> Додано';
+                    setTimeout(function () {
+                        addToCartBtn.classList.add('btn-primary');
+                        addToCartBtn.classList.remove('btn-success');
+                        addToCartBtn.innerHTML = '<i class="fas fa-cart-plus"></i> В корзину';
+                    }, 2000);
+                });
+            });
+        }
     });
 </script>
-@endpush
+@endsection

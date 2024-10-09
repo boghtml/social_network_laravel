@@ -28,10 +28,9 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
-        <!-- Навігаційна панель -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('store.home') }}">
+                <a class="navbar-brand" href="{{route('products.index') }}">
                     <img src="{{ asset('images/logo.jfif') }}" alt="WorkoutShop Logo" class="d-inline-block align-top" style="height: 40px; margin-right: 10px;">
                     WorkoutShop
                 </a>
@@ -39,10 +38,10 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <!-- Ліва частина меню -->
+             
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('store.home') }}">Головна</a>
+                            <a class="nav-link" href="{{route('products.index') }}">Головна</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('store.about') }}">Про нас</a>
@@ -68,6 +67,19 @@
                             </li>
                         @else
                             <!-- Авторизований користувач -->
+                            <li class="nav-item">
+                                <a class="nav-link position-relative" href="{{ route('cart.index') }}">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    @php
+                                        $cartItemCount = session()->has('cart') ? count(session('cart')) : 0;
+                                    @endphp
+                                    @if ($cartItemCount > 0)
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            {{ $cartItemCount }}
+                                        </span>
+                                    @endif
+                                </a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-user-circle"></i>
@@ -75,7 +87,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li><a class="dropdown-item" href="{{ route('profile.show', ['username' => Auth::user()->username]) }}">Профіль</a></li>
-                                    <!--  <li><a class="dropdown-item" href="{{ route('orders.index') }}">Замовлення</a></li>  -->
+                                    <li><a class="dropdown-item" href="{{ route('orders.index') }}">Мої замовлення</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form action="{{ route('logout') }}" method="POST">
@@ -95,13 +107,11 @@
     </header>
 
     <main class="flex-grow-1">
-        <!-- Контент сторінки -->
         @yield('content')
     </main>
 
     <footer class="footer mt-auto py-3 bg-dark text-white">
         <div class="container">
-            <!-- Ваш футер -->
             <div class="row">
                 <div class="col-md-4">
                     <h5>Про WorkoutShop</h5>
@@ -133,11 +143,10 @@
         </div>
     </footer>
 
-    <!-- Підключення скриптів -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Bootstrap JS -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Ваші додаткові скрипти -->
+
     @yield('scripts')
 </body>
 </html>
