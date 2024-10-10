@@ -7,14 +7,12 @@ use App\Models\Product;
 
 class CartController extends Controller
 {
-    // Відображення корзини
     public function index()
     {
         $cart = session()->get('cart', []);
         return view('cart.index', compact('cart'));
     }
 
-    // Додавання товару до корзини
     public function add(Request $request)
     {
         $productId = $request->input('product_id');
@@ -23,11 +21,9 @@ class CartController extends Controller
 
         $cart = session()->get('cart', []);
 
-        // Якщо товар вже є в корзині, оновлюємо кількість
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity'] += $quantity;
         } else {
-            // Додаємо товар до корзини
             $cart[$productId] = [
                 'product_id' => $productId,
                 'name' => $product->name,
@@ -39,7 +35,6 @@ class CartController extends Controller
 
         session()->put('cart', $cart);
 
-        // Повертаємо відповідь для AJAX-запиту
         if ($request->ajax()) {
             $cartItemCount = count($cart);
             return response()->json(['cartItemCount' => $cartItemCount]);
@@ -48,7 +43,6 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Товар додано до корзини!');
     }
 
-    // Оновлення кількості товару в корзині
     public function update(Request $request)
     {
         $productId = $request->input('product_id');
@@ -65,7 +59,6 @@ class CartController extends Controller
         return redirect()->back()->with('error', 'Товар не знайдено в корзині!');
     }
 
-    // Видалення товару з корзини
     public function remove(Request $request)
     {
         $productId = $request->input('product_id');

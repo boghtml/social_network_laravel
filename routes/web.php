@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Middleware\AdminMiddleware; 
 use App\Http\Controllers\Admin\ProductControllerAdmin;
 
-
 Route::get('/welcome', function () {
     return view('welcome');
 });

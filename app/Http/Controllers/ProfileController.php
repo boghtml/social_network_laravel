@@ -6,11 +6,10 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use Illuminate\Http\Request; // Переконайтеся, що ви використовуєте правильний клас
+use Illuminate\Http\Request; 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Follower; // Імпорт моделі Follower
-
+use App\Models\Follower;
 class ProfileController extends Controller
 {
     /**

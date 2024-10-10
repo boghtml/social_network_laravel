@@ -102,43 +102,7 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var productCarousel = document.getElementById('productCarousel');
-        if (productCarousel) {
-            var carousel = new bootstrap.Carousel(productCarousel, {
-                interval: false 
-            });
-
-            
-            var thumbnails = document.querySelectorAll('.img-thumbnail');
-            thumbnails.forEach(function (thumbnail) {
-                thumbnail.addEventListener('click', function () {
-                    var index = this.getAttribute('data-bs-slide-to');
-                    carousel.to(parseInt(index));
-                });
-            });
-
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'ArrowLeft') {
-                    carousel.prev();
-                } else if (e.key === 'ArrowRight') {
-                    carousel.next();
-                }
-            });
-
-            productCarousel.focus();
-
-            var quantityInput = document.getElementById('quantityInput');
-            if (quantityInput) {
-                quantityInput.addEventListener('input', function () {
-                    var max = parseInt(this.getAttribute('max'));
-                    var value = parseInt(this.value);
-                    if (value > max) {
-                        this.value = max;
-                    }
-                });
-            }
-        }
-
+        
         var addToCartBtn = document.getElementById('addToCartBtn');
         if (addToCartBtn) {
             var productId = addToCartBtn.getAttribute('data-product-id');
