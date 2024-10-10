@@ -10,6 +10,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Middleware\AdminMiddleware; // Add this at the top
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -84,6 +86,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/orders/confirmation', [OrderController::class, 'confirmation'])->name('orders.confirmation');
 
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show')->where('order', '[0-9]+');
-
-
 });
+
+Route::prefix('admin')
+    ->middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('orders', App\Http\Controllers\Admin\OrderController::class);
+        Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+    });
+
+
