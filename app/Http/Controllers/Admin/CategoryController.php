@@ -8,7 +8,6 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    // Показати список категорій
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -25,13 +24,11 @@ class CategoryController extends Controller
         return view('admin.categories.index', compact('categories'));
     }
 
-    // Показати форму створення категорії
     public function create()
     {
         return view('admin.categories.create');
     }
 
-    // Зберегти нову категорію
     public function store(Request $request)
     {
         $request->validate([
@@ -44,14 +41,12 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Категорію створено.');
     }
 
-    // Показати форму редагування категорії
     public function edit($id)
     {
         $category = Category::findOrFail($id);
         return view('admin.categories.edit', compact('category'));
     }
 
-    // Оновити категорію
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -65,12 +60,10 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Категорію оновлено.');
     }
 
-    // Видалити категорію
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
 
-        // Перевірити, чи є у категорії товари
         if ($category->products()->count() > 0) {
             return redirect()->route('admin.categories.index')->with('error', 'Неможливо видалити категорію, яка містить товари.');
         }

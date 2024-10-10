@@ -8,7 +8,6 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
-    // Показати список замовлень
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -31,14 +30,12 @@ class OrderController extends Controller
         return view('admin.orders.index', compact('orders'));
     }
 
-    // Показати форму редагування замовлення
     public function edit($id)
     {
         $order = Order::with('user', 'orderItems.product')->findOrFail($id);
         return view('admin.orders.edit', compact('order'));
     }
 
-    // Оновити замовлення
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -52,5 +49,4 @@ class OrderController extends Controller
         return redirect()->route('admin.orders.index')->with('success', 'Статус замовлення оновлено.');
     }
 
-    // Інші методи (create, store, show, destroy) можна залишити порожніми або видалити, якщо не використовуються.
 }
