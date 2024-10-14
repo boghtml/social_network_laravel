@@ -28,10 +28,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('messages.index') }}">
                     <i class="far fa-paper-plane"></i> Повідомлення
                 </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="far fa-heart"></i> Сповіщення

@@ -21,6 +21,21 @@ class User extends Authenticatable
         return $this->hasMany(Follower::class, 'user_id');
     }
 
+    public function followingUsers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'following_user_id');
+    }
+    
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class); // Один до багатьох

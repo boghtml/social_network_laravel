@@ -13,6 +13,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Middleware\AdminMiddleware; 
 use App\Http\Controllers\Admin\ProductControllerAdmin;
+use App\Http\Controllers\MessageController;
+
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -99,3 +101,9 @@ Route::prefix('admin')
         Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
         Route::resource('products', App\Http\Controllers\Admin\ProductControllerAdmin::class);
     });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/{username}', [MessageController::class, 'show'])->name('messages.show');
+    Route::post('/messages/{username}', [MessageController::class, 'store'])->name('messages.store');
+});
