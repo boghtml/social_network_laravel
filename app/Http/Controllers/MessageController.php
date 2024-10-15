@@ -22,20 +22,16 @@ class MessageController extends Controller
     {
         $user = Auth::user();
 
-        // Знайти користувача за username
         $chatUser = User::where('username', $username)->firstOrFail();
 
-         // Перевірити, чи поточний користувач відстежує цього користувача
          $isFollowing = $user->followingUsers->contains('id', $chatUser->id);
 
          if (!$isFollowing) {
              abort(403, 'Ви не можете писати цьому користувачу, оскільки ви його не відстежуєте.');
          }
 
-        // Отримати список відстежуваних користувачів
         $following = $user->followingUsers;
 
-        // Отримати історію повідомлень між двома користувачами
         $messages = Message::where(function($query) use ($user, $chatUser) {
             $query->where('sender_id', $user->id)->where('receiver_id', $chatUser->id);
         })->orWhere(function($query) use ($user, $chatUser) {
@@ -50,10 +46,8 @@ class MessageController extends Controller
     {
         $user = Auth::user();
 
-        // Знайти користувача за username
         $chatUser = User::where('username', $username)->firstOrFail();
 
-        // Перевірити, чи поточний користувач відстежує цього користувача
         $isFollowing = $user->followingUsers->contains('id', $chatUser->id);
 
         if (!$isFollowing) {

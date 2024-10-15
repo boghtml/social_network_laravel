@@ -3,7 +3,6 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <!-- Сайдбар з відстежуваними користувачами -->
         <div class="col-md-4">
             <h4>Ваші чати</h4>
             <ul class="list-group">
@@ -22,13 +21,11 @@
             </ul>
         </div>
 
-        <!-- Область чату -->
         <div class="col-md-8">
             <h4>Чат з {{ $chatUser->username }}</h4>
             <div class="chat-box" style="height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;">
                 @foreach($messages as $message)
                     @if($message->sender_id == Auth::id())
-                        <!-- Повідомлення від поточного користувача -->
                         <div class="text-end mb-2">
                             <div class="d-inline-block bg-primary text-white p-2 rounded">
                                 {{ $message->content }}
@@ -36,7 +33,7 @@
                             <small class="text-muted d-block">{{ $message->created_at }}</small>
                         </div>
                     @else
-                        <!-- Повідомлення від іншого користувача -->
+                    
                         <div class="mb-2">
                             <div class="d-inline-block bg-light p-2 rounded">
                                 {{ $message->content }}
@@ -46,7 +43,7 @@
                     @endif
                 @endforeach
             </div>
-            <!-- Форма для відправки повідомлення -->
+            
             <form action="{{ route('messages.store', $chatUser->username) }}" method="POST" class="mt-3">
                 @csrf
                 <div class="input-group">

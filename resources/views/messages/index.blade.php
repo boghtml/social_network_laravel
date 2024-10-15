@@ -3,7 +3,6 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <!-- Сайдбар з відстежуваними користувачами -->
         <div class="col-md-4">
             <h4>Ваші чати</h4>
             <ul class="list-group">
@@ -22,7 +21,6 @@
             </ul>
         </div>
 
-        <!-- Порожній простір для вибору чату -->
         <div class="col-md-8">
             <h4>Оберіть користувача для початку чату</h4>
         </div>
