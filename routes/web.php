@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Middleware\AdminMiddleware; 
 use App\Http\Controllers\Admin\ProductControllerAdmin;
 use App\Http\Controllers\MessageController;
+use Illuminate\Support\Facades\Broadcast;
 
 
 Route::get('/welcome', function () {
@@ -107,3 +108,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/messages/{username}', [MessageController::class, 'show'])->name('messages.show');
     Route::post('/messages/{username}', [MessageController::class, 'store'])->name('messages.store');
 });
+
+// В кінці файлу web.php
+Broadcast::routes();

@@ -156,6 +156,8 @@ return [
     App\Providers\AppServiceProvider::class,
     // Додайте FortifyServiceProvider тут
     App\Providers\FortifyServiceProvider::class,
+    App\Providers\BroadcastServiceProvider::class,
+
 ],
 
 ];

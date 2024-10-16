@@ -33,7 +33,6 @@
                             <small class="text-muted d-block">{{ $message->created_at }}</small>
                         </div>
                     @else
-                    
                         <div class="mb-2">
                             <div class="d-inline-block bg-light p-2 rounded">
                                 {{ $message->content }}
