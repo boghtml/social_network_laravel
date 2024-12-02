@@ -38,7 +38,7 @@
 <ul>
     <li><strong>Back-end:</strong> Laravel PHP Framework</li>
     <li><strong>Front-end:</strong> Blade Templates, HTML5, CSS3, JavaScript, Alpine.js</li>
-    <li><strong>Database:</strong> MySQL</li>
+    <li><strong>Database:</strong> PostgreSQL</li>
     <li><strong>Real-time Communication:</strong> Firebase Realtime Database</li>
     <li><strong>Package Management:</strong> Composer, npm</li>
     <li><strong>Asset Compilation:</strong> Vite</li>
