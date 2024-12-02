@@ -52,7 +52,7 @@
     <li>PHP >= 8.0</li>
     <li>Composer</li>
     <li>Node.js and npm</li>
-    <li>MySQL Database</li>
+    <li>PgAdmin4,  Database</li>
     <li>Git</li>
 </ul>
 
@@ -167,7 +167,7 @@ APP_URL=http://localhost
 
 LOG_CHANNEL=stack
 
-DB_CONNECTION=mysql
+DB_CONNECTION=postgres
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=your_database
